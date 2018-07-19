@@ -24,7 +24,8 @@ def mdefs(KSDp, KUDp, BSDp, BUDp, KSD, KUD, BSD, BUD, \
           z, params):
     
     # unpack params
-    [g, beta, delta, gamma, a, b, c, d, f, HSD, HUD, HSI, HUI, nu, mu, s, q] \
+    [g, beta, delta, gamma, a, b, c, d, f, HSD, HUD, HSI, HUI, \
+    nu, mu, ss, q, rho, sigma, beta, nx, ny, nz] \
         = params
     
     K = KSD + KUD
@@ -35,12 +36,12 @@ def mdefs(KSDp, KUDp, BSDp, BUDp, KSD, KUD, BSD, BUD, \
     NU = HUD + HUI
     W = (c*(f*NS)**((d-1)/d) + (1-c)*NU**((d-1)/d))**(d/(d-1))
     Y = (a*K**((b-1)/b) + (1-a)*(np.exp(z)*W)**((b-1)/b))**(b/(b-1))
-    X = Bp*(1+g) - (1+s)*B
+    X = Bp*(1+g) - (1+ss)*B
     r = a*(Y/K)**(1/b)
     wS = f*(1-a)*(Y/W)**(1/b)*c*(W/NS)**(1/d)
     wU = (1-a)*(Y/W)**(1/b)*(1-c)*(W/NU)**(1/d)
-    sS = s - nu*(BSD/wS) - mu*((BSDp-BSD)**2/Y)
-    sU = s - nu*(BUD/wU) - mu*((BUDp-BUD)**2/Y)
+    sS = ss - nu*(BSD/wS) - mu*((BSDp-BSD)**2/Y)
+    sU = ss - nu*(BUD/wU) - mu*((BUDp-BUD)**2/Y)
     CSD = wS + ((1+r-delta)*KSD + (1+sS)*BSD - (1+g)*(KSDp + BSDp))/HSD
     CUD = wU + ((1+r-delta)*KUD + (1+sU)*BUD - (1+g)*(KUDp + BUDp))/HUD
     CSI = wS
@@ -71,7 +72,8 @@ def mdyn(theta, params):
     [KSDpp, KUDpp, BSDpp, BUDpp, KSDp, KUDp, BSDp, BUDp, KSD, KUD, BSD, BUD, \
      zp, z] = theta
      
-    [g, beta, delta, gamma, a, b, c, d, f, HSD, HUD, HSI, HUI, nu, mu, s, q] \
+    g, beta, delta, gamma, a, b, c, d, f, HSD, HUD, HSI, HUI, \
+    nu, mu, ss, q, rho, sigma, beta, nx, ny, nz \
         = params
     
     K, B, NS, NU, W, Y, r, sS, sU, X, wS, wU, CSD, CUD, CSI, CUI, USD, UUD, \
@@ -296,8 +298,6 @@ ss = .006043/4  #.006043 average real return in USA 2003-2016
 rho = .95
 sigma = .0124
 beta =  1/(1+ss)
-params = np.array([g, beta, delta, gamma, a, b, c, d, f, HSD, HUD, HSI, HUI, \
-    nu, mu, ss, q])
         
 # set program parameters
 nx = 4
@@ -306,6 +306,9 @@ nz = 1
 dotypical = False
 domoments = True
 doIRFs = True
+
+params = np.array([g, beta, delta, gamma, a, b, c, d, f, HSD, HUD, HSI, HUI, \
+    nu, mu, ss, q, rho, sigma, beta, nx, ny, nz])
 
 # -----------------------------------------------------------------------------
 # BASELINE STEADY STATE
@@ -367,7 +370,7 @@ HUDn = .7580
 HSIn = .0029
 HUIn = .0471
 paramsn = np.array([g, beta, delta, gamma, a, b, c, d, f, HSDn, HUDn, HSIn, \
-                    HUIn, nu, mu, ss, q])
+                    HUIn, nu, mu, ss, q, rho, sigma, beta, nx, ny, nz])
 
 guessXY = Xbar #np.ones((1,nx+ny))*.1
 
@@ -499,5 +502,6 @@ if doIRFs:
 # SAVE RESULTS TP PKL FILE    
 
 output = open(name + '.pkl', 'wb')
-pkl.dump((params, paramsn, barsdf, barsndf, Momdf, IRFserlist), output)
+pkl.dump((params, paramsn, bars, barsn, Momdf, IRFserlist, LinCoeffs, \
+          LinCoeffsn), output)
 output.close()
