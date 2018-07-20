@@ -8,7 +8,7 @@ import numpy as np
 import pickle as pkl
 import matplotlib.pyplot as plt
 
-name = 'UN_MC'
+name = 'EQ'
 
 def mdefs(Xp, X, z, params):
     
@@ -526,7 +526,7 @@ def mcanalysis(mcdata, bardata, histdata, nsim):
 # LOAD VALUES FROM SS AND LINEARIZATION
     
 # load steady state values and parameters
-infile = open('UN.pkl', 'rb')
+infile = open(name + '.pkl', 'rb')
 (params, paramsn, bars, barsn, Momdf, IRFserlist, LinCoeffs, LinCoeffsn) \
     = pkl.load(infile)
 infile.close()
@@ -633,7 +633,7 @@ plt.plot(time, Bupp[0:nobs-1], 'k:')
 plt.plot(time, Blow[0:nobs-1], 'k:')
 plt.title('International Savings')
 
-plt.savefig('JapImmAgg_mc.pdf', format='pdf', dpi=2000)
+plt.savefig('JapImmAgg_mc_' + name + '.pdf', format='pdf', dpi=2000)
 plt.show()
 
 plt.figure()
@@ -659,7 +659,7 @@ plt.plot(time, sUavg[0:nobs-1], 'k-')
 plt.plot(time, sUupp[0:nobs-1], 'k:')
 plt.plot(time, sUlow[0:nobs-1], 'k:')
 plt.title('Unskilled Interest Rate')
-plt.savefig('JapImmWages_mc.pdf', format='pdf', dpi=2000)
+plt.savefig('JapImmWages_mc_' + name + '.pdf', format='pdf', dpi=2000)
 plt.show()
  
 plt.figure()
@@ -685,15 +685,15 @@ plt.plot(time, UUIavg[0:nobs-1], 'k-')
 plt.plot(time, UUIupp[0:nobs-1], 'k:')
 plt.plot(time, UUIlow[0:nobs-1], 'k:')
 plt.title('Unskilled Immigrant')
-plt.savefig('JapImmUtil_mc.pdf', format='pdf', dpi=2000)
+plt.savefig('JapImmUtil_mc_' + name + '.pdf', format='pdf', dpi=2000)
 plt.show()
 
 # -----------------------------------------------------------------------------
 # SAVE RESULTS
 
-output = open(name + '.pkl', 'wb')
+output = open(name + '_mc.pkl', 'wb')
 
-alldata = (mcdata, histdata, avgdata, uppdata, lowdata)
+alldata = (histdata, avgdata, uppdata, lowdata)
 
 pkl.dump(alldata, output)
 
