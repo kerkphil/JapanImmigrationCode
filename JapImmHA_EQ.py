@@ -38,8 +38,8 @@ def mdefs(KSDp, KUDp, BSDp, BUDp, KSD, KUD, BSD, BUD, \
     Y = (a*K**((b-1)/b) + (1-a)*(np.exp(z)*W)**((b-1)/b))**(b/(b-1))
     X = Bp*(1+g) - (1+ss)*B
     r = a*(Y/K)**(1/b)
-    wS = f*(1-a)*(Y/W)**(1/b)*c*(W/NS)**(1/d)
-    wU = (1-a)*(Y/W)**(1/b)*(1-c)*(W/NU)**(1/d)
+    wS = f*(1-a)*(Y/W)**(1/b)*c*(W/NS)**(1/d)*np.exp(z*(1-1/d))
+    wU = (1-a)*(Y/W)**(1/b)*(1-c)*(W/NU)**(1/d)*np.exp(z*(1-1/d))
     sS = ss - nu*(BSD/wS) - mu*((BSDp-BSD)**2/Y)
     sU = ss - nu*(BUD/wU) - mu*((BUDp-BUD)**2/Y)
     CSD = wS + ((1+r-delta)*KSD + (1+sS)*BSD - (1+g)*(KSDp + BSDp))/HSD
