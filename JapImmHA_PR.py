@@ -170,7 +170,7 @@ def runsim(nobs, switch, Xbar1, Xbar2, LinCoeffs1, LinCoeffs2, nx, nz, IRF):
     Ihist   = np.zeros(nobs)
     Chist   = np.zeros(nobs)
     
-    for t in range(0, nobs):
+    for t in range(0, switch):
         Khist[t], Bhist[t], NShist[t], NUhist[t], Whist[t], GDPhist[t], \
             sShist[t], sUhist[t], EXhist[t], rhist[t], wShist[t], wUhist[t], \
             CSDhist[t], CUDhist[t], CSIhist[t], CUIhist[t], USDhist[t], \
@@ -178,6 +178,15 @@ def runsim(nobs, switch, Xbar1, Xbar2, LinCoeffs1, LinCoeffs2, nx, nz, IRF):
             = mdefs(KSDhist[t+1], KUDhist[t+1], BSDhist[t+1], \
             BUDhist[t+1], KSDhist[t], KUDhist[t], BSDhist[t], BUDhist[t], \
             zhist[t], params)
+            
+    for t in range(switch, nobs):
+        Khist[t], Bhist[t], NShist[t], NUhist[t], Whist[t], GDPhist[t], \
+            sShist[t], sUhist[t], EXhist[t], rhist[t], wShist[t], wUhist[t], \
+            CSDhist[t], CUDhist[t], CSIhist[t], CUIhist[t], USDhist[t], \
+            UUDhist[t], USIhist[t], UUIhist[t], Ihist[t], Chist[t] \
+            = mdefs(KSDhist[t+1], KUDhist[t+1], BSDhist[t+1], \
+            BUDhist[t+1], KSDhist[t], KUDhist[t], BSDhist[t], BUDhist[t], \
+            zhist[t], paramsn)
             
     KSDhist = KSDhist[0:nobs] 
     KUDhist = KUDhist[0:nobs] 
